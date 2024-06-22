@@ -11,6 +11,9 @@ public class Transaction
     public int? UserFromId { get; set; }
     public User? UserFrom { get; set; }
 
-    public int UserToId { get; set; }
+    public int? UserToId { get; set; }
     public User? UserTo { get; set; }
+
+    public int? CompanyId { get; set; }
+    public Company? Company { get; set; }
 }

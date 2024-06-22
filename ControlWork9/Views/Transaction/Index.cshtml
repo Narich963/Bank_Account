@@ -34,6 +34,9 @@
                 К кому
             </th>
             <th>
+                Компания
+            </th>
+            <th>
                 Время транзакции
             </th>
             <th>
@@ -56,8 +59,18 @@
                 }
             </td>
             <td>
-                @item.UserTo.UserName
+                @if (item.UserTo != null)
+                {
+                    @item.UserTo.UserName
+                }
             </td>
+            <td>
+                @if (item.Company != null)
+                {
+                    @item.Company.Name
+                }
+            </td>
+
             <td>
                 @Html.DisplayFor(modelItem => item.Created)
             </td>

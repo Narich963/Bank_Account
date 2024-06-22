@@ -3,6 +3,7 @@ using System;
 using ControlWork9.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ControlWork9.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20240622091305_AddedCompany")]
+    partial class AddedCompany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,19 +39,7 @@ namespace ControlWork9.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Companies");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Mega"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Aknet"
-                        });
+                    b.ToTable("Company");
                 });
 
             modelBuilder.Entity("ControlWork9.Models.CompanyUser", b =>
@@ -74,7 +65,7 @@ namespace ControlWork9.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CompanyUsers");
+                    b.ToTable("CompanyUser");
                 });
 
             modelBuilder.Entity("ControlWork9.Models.Transaction", b =>
@@ -85,9 +76,6 @@ namespace ControlWork9.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CompanyId")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
@@ -97,12 +85,10 @@ namespace ControlWork9.Migrations
                     b.Property<int?>("UserFromId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("UserToId")
+                    b.Property<int>("UserToId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
 
                     b.HasIndex("UserFromId");
 
@@ -337,10 +323,6 @@ namespace ControlWork9.Migrations
 
             modelBuilder.Entity("ControlWork9.Models.Transaction", b =>
                 {
-                    b.HasOne("ControlWork9.Models.Company", "Company")
-                        .WithMany()
-                        .HasForeignKey("CompanyId");
-
                     b.HasOne("ControlWork9.Models.User", "UserFrom")
                         .WithMany("SendTransactions")
                         .HasForeignKey("UserFromId")
@@ -349,9 +331,8 @@ namespace ControlWork9.Migrations
                     b.HasOne("ControlWork9.Models.User", "UserTo")
                         .WithMany("ReceivedTransactions")
                         .HasForeignKey("UserToId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Company");
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("UserFrom");
 

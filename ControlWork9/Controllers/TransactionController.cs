@@ -23,6 +23,7 @@ public class TransactionController : Controller
         var transactions = await _context.Transactions
             .Include(u => u.UserTo)
             .Include(u => u.UserFrom)
+            .Include(u => u.Company)
             .Where(u => u.UserToId == user.Id || u.UserFromId == user.Id)
             .ToListAsync();
 
@@ -34,6 +35,7 @@ public class TransactionController : Controller
         {
             transactions = transactions.Where(t => t.Created <= to).ToList();
         }
+        transactions = transactions.OrderByDescending(t => t.Created).ToList();
         return View(transactions);
     }
 

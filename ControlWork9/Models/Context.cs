@@ -8,6 +8,8 @@ public class Context : IdentityDbContext<User, IdentityRole<int>, int>
 {
     public DbSet<User> Users { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
+    public DbSet<Company> Companies { get; set; }
+    public DbSet<CompanyUser> CompanyUsers { get; set; }
     public Context(DbContextOptions opts) : base(opts)
     {
         
@@ -26,5 +28,11 @@ public class Context : IdentityDbContext<User, IdentityRole<int>, int>
             .WithMany(t => t.ReceivedTransactions)
             .HasForeignKey(t => t.UserToId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<Company>().HasData(
+            new Company { Id = 1, Name = "Mega" },
+            new Company { Id = 2, Name = "Aknet" }
+            );
+
     }
 }

@@ -16,8 +16,9 @@ namespace ControlWork9.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            ViewBag.Companies = await _context.Companies.ToListAsync();
             return View();
         }
         [HttpPost]
@@ -82,11 +83,64 @@ namespace ControlWork9.Controllers
             TempData["Error"] = "Данный номер не был найден";
             return RedirectToAction("Index");
         }
-        public IActionResult Privacy()
+        [HttpPost]
+        public async Task<IActionResult> AddToCompany(int companyId, int sum, int number)
         {
-            return View();
-        }
+            User to = await _context.Users.FirstOrDefaultAsync(u => u.UniqueNumber == number);
+            Company company = await _context.Companies.FindAsync(companyId);
+            User user = await _userManager.GetUserAsync(User);
+            if (to != null && company != null)
+            {
+                if (await _context.CompanyUsers.AnyAsync(c => c.UserId == to.Id && c.CompanyId == company.Id))
+                {
+                    var cu = await _context.CompanyUsers.FirstOrDefaultAsync(c => c.UserId == to.Id && c.CompanyId == company.Id);
+                    if (user.Id != to.Id)
+                    {
+                        user.Balance -= sum;
+                    }
+                    else
+                    {
+                        to.Balance -= sum;
+                    }
+                    cu.Balance += sum;
+                    _context.UpdateRange(cu, to);
+                }
+                else
+                {
+                    CompanyUser cu = new()
+                    {
+                        UserId = to.Id,
+                        CompanyId = companyId
+                    };
+                    if (user.Id != to.Id)
+                    {
+                        user.Balance -= sum;
+                    }
+                    else
+                    {
+                        to.Balance -= sum;
+                    }
+                    cu.Balance += sum;
+                    await _context.AddAsync(cu);
+                    _context.Update(to);
+                }
 
+                Transaction tr = new()
+                {
+                    CompanyId = company.Id,
+                    UserFromId = user.Id,
+                    Sum = sum,
+                    UserToId = to.Id
+                };
+
+                await _context.AddAsync(tr);
+                await _context.SaveChangesAsync();
+                TempData["Success"] = "Деньги успешно переведены";
+                return RedirectToAction("Index");
+            }
+            TempData["Error"] = "Данный номер не был найден";
+            return RedirectToAction("Index");
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
