@@ -1,0 +1,37 @@
+﻿@model List<User>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Имя
+            </th>
+            <th>
+                Почта
+            </th>
+            <th>
+                Уникальный номер
+            </th>
+            <th>
+                Баланс
+            </th>
+        </tr>
+    </thead>
+    @foreach (var item in Model) 
+    {
+        <tr>
+            <td>
+                @item.UserName
+            </td>
+            <td>
+                @item.Email
+            </td>
+            <td>
+                @item.UniqueNumber
+            </td>
+            <td>
+                @item.Balance
+            </td>
+        </tr>
+    }
+</table>

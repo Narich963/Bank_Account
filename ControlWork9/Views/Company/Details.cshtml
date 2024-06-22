@@ -1,0 +1,30 @@
+﻿@model ControlWork9.Models.Company
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Company</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        @if (ViewBag.Balance != null)
+        {
+            <dt class="col-sm-2">
+                Ваш баланс
+            </dt>
+            <dd class="col-sm-10">
+                @ViewBag.Balance
+            </dd>
+        }
+    </dl>
+</div>
+
