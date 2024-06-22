@@ -7,6 +7,7 @@ namespace ControlWork9.Models;
 public class Context : IdentityDbContext<User, IdentityRole<int>, int>
 {
     public DbSet<User> Users { get; set; }
+    public DbSet<Transaction> Transactions { get; set; }
     public Context(DbContextOptions opts) : base(opts)
     {
         

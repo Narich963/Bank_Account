@@ -6,4 +6,9 @@ public class User : IdentityUser<int>
 {
     public int? UniqueNumber { get; set; }
     public int Balance { get; set; } = 10000;
+    public List<Transaction> Transactions { get; set; }
+    public User()
+    {
+        Transactions = new List<Transaction>();
+    }
 }
