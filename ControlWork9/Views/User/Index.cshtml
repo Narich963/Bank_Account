@@ -1,19 +1,21 @@
-﻿@model List<User>
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer loc
+@model List<User>
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                Имя
+                @loc["Name"]
             </th>
             <th>
-                Почта
+                @loc["Email"]
             </th>
             <th>
-                Уникальный номер
+                @loc["Number"]
             </th>
             <th>
-                Баланс
+                @loc["Balance"]
             </th>
         </tr>
     </thead>

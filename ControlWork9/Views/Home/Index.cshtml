@@ -1,4 +1,7 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer loc
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -20,15 +23,15 @@
     <form asp-action="AddToBalance" method="post" class="col-6 border border-1">
         <div class="validation" asp-validation-summary="ModelOnly"></div>
         <div class="mb-3 ms-3 me-3 mt-3">
-            <label for="exampleInputEmail1" class="form-label">Уникальный номер пользователя</label>
+            <label for="exampleInputEmail1" class="form-label">@loc["Number"]</label>
             <input name="uniqueNumber" type="number" class="form-control" id="exampleInputEmail1">
         </div>
         <div class="mb-3 ms-3 me-3">
-            <label for="exampleInputEmail1" class="form-label">Сумма пополнения</label>
+            <label for="exampleInputEmail1" class="form-label">@loc["Sum"]</label>
             <input name="sum" type="number" class="form-control" id="exampleInputEmail1">
         </div>
         <div class="mb-3 ms-3 me-3">
-            <button type="submit" class="btn btn-primary">Пополнить</button>
+            <button type="submit" class="btn btn-primary">@loc["Send"]</button>
         </div>
     </form>
 </div>
@@ -40,15 +43,15 @@
         <form asp-action="Transfer" method="post" class="col-6 border border-1">
             <div class="validation" asp-validation-summary="ModelOnly"></div>
             <div class="mb-3 ms-3 me-3 mt-3">
-                <label for="exampleInputEmail1" class="form-label">Уникальный номер пользователя</label>
+                <label for="exampleInputEmail1" class="form-label">@loc["Number"]</label>
                 <input name="uniqueNumber" type="number" class="form-control" id="exampleInputEmail1">
             </div>
             <div class="mb-3 ms-3 me-3">
-                <label for="exampleInputEmail1" class="form-label">Сумма перевода</label>
+                <label for="exampleInputEmail1" class="form-label">@loc["Sum"]</label>
                 <input name="sum" type="number" class="form-control" id="exampleInputEmail1">
             </div>
             <div class="mb-3 ms-3 me-3">
-                <button type="submit" class="btn btn-primary">Перевести деньги</button>
+                <button type="submit" class="btn btn-primary">@loc["Send"]</button>
             </div>
         </form>
     </div>
@@ -61,7 +64,7 @@
         <form asp-action="AddToCompany" method="post" class="col-6 border border-1">
             <div class="validation" asp-validation-summary="ModelOnly"></div>
             <div class="mb-3 ms-3 me-3 mt-3">
-                <label for="exampleInputEmail1" class="form-label">Компания</label>
+                <label for="exampleInputEmail1" class="form-label">@loc["Company"]</label>
                 <select name="companyId">
                     <option value=""></option>
                     @foreach (var c in ViewBag.Companies as List<Company>)
@@ -71,15 +74,15 @@
                 </select>
             </div>
             <div class="mb-3 ms-3 me-3">
-                <label for="exampleInputEmail1" class="form-label">Уникальный номер</label>
+                <label for="exampleInputEmail1" class="form-label">@loc["Number"]</label>
                 <input name="number" type="number" class="form-control" id="exampleInputEmail1">
             </div>
             <div class="mb-3 ms-3 me-3">
-                <label for="exampleInputEmail1" class="form-label">Сумма перевода</label>
+                <label for="exampleInputEmail1" class="form-label">@loc["Sum"]</label>
                 <input name="sum" type="number" class="form-control" id="exampleInputEmail1">
             </div>
             <div class="mb-3 ms-3 me-3">
-                <button type="submit" class="btn btn-primary">Перевести деньги</button>
+                <button type="submit" class="btn btn-primary">@loc["Send"]</button>
             </div>
         </form>
     </div>

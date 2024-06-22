@@ -1,4 +1,5 @@
 using ControlWork9.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -48,6 +49,7 @@ namespace ControlWork9.Controllers
             return RedirectToAction("Index");
         }
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Transfer(int sum, int uniqueNumber)
         {
             if (sum <= 0)
@@ -84,6 +86,7 @@ namespace ControlWork9.Controllers
             return RedirectToAction("Index");
         }
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> AddToCompany(int companyId, int sum, int number)
         {
             User to = await _context.Users.FirstOrDefaultAsync(u => u.UniqueNumber == number);

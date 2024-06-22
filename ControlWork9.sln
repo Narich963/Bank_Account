@@ -3,7 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlWork9", "ControlWork9\ControlWork9.csproj", "{451F5CF1-59CE-4029-BF7F-026664A04DE3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControlWork9", "ControlWork9\ControlWork9.csproj", "{451F5CF1-59CE-4029-BF7F-026664A04DE3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{21436DEE-B904-45B3-92CE-D306473AE00E}"
+	ProjectSection(SolutionItems) = preProject
+		time.txt = time.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
