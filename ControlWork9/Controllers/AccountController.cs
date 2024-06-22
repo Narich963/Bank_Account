@@ -2,6 +2,7 @@
 using ControlWork9.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace ControlWork9.Controllers;
@@ -10,10 +11,12 @@ public class AccountController : Controller
 {
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;
-    public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+    private readonly Context _context;
+    public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, Context context)
     {
         _userManager = userManager;
         _signInManager = signInManager;
+        _context = context;
     }
     [HttpGet]
     public IActionResult Login()
@@ -26,13 +29,10 @@ public class AccountController : Controller
     {
         if (ModelState.IsValid)
         {
-            User user = await _userManager.FindByEmailAsync(model.Login) ?? await _userManager.FindByNameAsync(model.Login);
+            User user = await _userManager.FindByEmailAsync(model.Login) ?? await _userManager.FindByNameAsync(model.Login)
+                ?? await _context.Users.FirstOrDefaultAsync(u => u.UniqueNumber.ToString() == model.Login);
             if (user != null)
             {
-                if (user.LockoutEnabled == true && user.LockoutEnd > DateTime.UtcNow)
-                {
-                    ModelState.AddModelError("", "Ваш аккаунт заблокирован");
-                }
                 SignInResult result = await _signInManager.PasswordSignInAsync(
                     user,
                     model.Password,
@@ -74,7 +74,9 @@ public class AccountController : Controller
 
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, "user");
+                user.UniqueNumber = await GenerateUniqueNumber();
+                await _userManager.UpdateAsync(user);
+                Console.WriteLine(user.UniqueNumber);
                 await _signInManager.SignInAsync(user, isPersistent: false);
                 return RedirectToAction("Index", "Home");
             }
@@ -84,6 +86,16 @@ public class AccountController : Controller
             }
         }
         return View(model);
+    }
+    private async Task<int> GenerateUniqueNumber()
+    {
+        int number;
+        do
+        {
+            number = new Random().Next(100000, 999999);
+        }
+        while (await _userManager.Users.AnyAsync(u => u.UniqueNumber == number));
+        return number;
     }
     public async Task<IActionResult> Logout()
     {

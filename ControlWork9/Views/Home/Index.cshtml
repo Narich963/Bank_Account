@@ -3,6 +3,18 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <form asp-action="AddToBalance" method="post">
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
+        <div class="mb-3 col-4">
+            <label for="exampleInputEmail1" class="form-label">Уникальный номер пользователя</label>
+            <input name="uniqueNumber" type="number" class="form-control" id="exampleInputEmail1">
+        </div>
+        <div class="mb-3 col-4">
+            <label for="exampleInputEmail1" class="form-label">Сумма пополнения</label>
+            <input name="sum" type="number" class="form-control" id="exampleInputEmail1">
+        </div>
+        <div class="mb-3 col-4">
+            <button type="submit" class="btn btn-primary">Пополнить</button>
+        </div>
+    </form>
 </div>

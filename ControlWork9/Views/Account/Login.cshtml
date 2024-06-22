@@ -1,4 +1,6 @@
 ﻿@using ControlWork9.ViewModels
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer loc
 @model LoginViewModel
 
 @{
@@ -9,20 +11,20 @@
 <form asp-action="Login" method="post" asp-antiforgery="true">
     <div class="validation" asp-validation-summary="ModelOnly"></div>
     <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">Имя пользователя или почта</label>
+        <label for="exampleInputEmail1" class="form-label">@loc["Login"]</label>
         <input asp-for="Login" type="text" class="form-control" id="exampleInputEmail1">
         <span asp-validation-for="Login"></span>
     </div>
 
     <div class="row g-3 align-items-center">
         <div class="col-auto">
-            <label for="inputPassword6" class="col-form-label">Пароль</label>
+            <label for="inputPassword6" class="col-form-label">@loc["Password"]</label>
         </div>
         <div class="password col-auto">
             <input asp-for="Password" type="password" id="password-input" class="form-control" aria-describedby="passwordHelpInline">
             <span asp-validation-for="Password"></span>
         </div>
     </div>
-    <button type="submit" class="btn btn-primary">Войти в аккаунт</button>
+    <button type="submit" class="btn btn-primary">@loc["Enter"]</button>
 </form>
 
