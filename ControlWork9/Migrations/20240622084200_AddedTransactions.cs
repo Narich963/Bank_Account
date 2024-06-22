@@ -18,26 +18,37 @@ namespace ControlWork9.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    FromId = table.Column<int>(type: "integer", nullable: true),
-                    ToId = table.Column<int>(type: "integer", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Sum = table.Column<int>(type: "integer", nullable: false),
-                    UserId = table.Column<int>(type: "integer", nullable: true)
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UserFromId = table.Column<int>(type: "integer", nullable: true),
+                    UserToId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Transactions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Transactions_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Transactions_AspNetUsers_UserFromId",
+                        column: x => x.UserFromId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Transactions_AspNetUsers_UserToId",
+                        column: x => x.UserToId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transactions_UserId",
+                name: "IX_Transactions_UserFromId",
                 table: "Transactions",
-                column: "UserId");
+                column: "UserFromId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transactions_UserToId",
+                table: "Transactions",
+                column: "UserToId");
         }
 
         /// <inheritdoc />

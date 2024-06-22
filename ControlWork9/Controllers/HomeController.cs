@@ -32,6 +32,12 @@ namespace ControlWork9.Controllers
             if (user != null)
             {
                 user.Balance += sum;
+                Transaction tr = new()
+                {
+                    UserToId = user.Id,
+                    Sum = sum,
+                };
+                await _context.AddAsync(tr);
                 _context.Update(user);
                 await _context.SaveChangesAsync();
                 TempData["Success"] = "Баланс успешно пополнен";
@@ -59,6 +65,15 @@ namespace ControlWork9.Controllers
                 }
                 fromUser.Balance -= sum;
                 toUser.Balance += sum;
+
+                Transaction tr = new()
+                {
+                    UserFromId = fromUser.Id,
+                    UserToId = toUser.Id,
+                    Sum = sum
+                };
+
+                await _context.AddAsync(tr);
                 _context.UpdateRange(fromUser, toUser);
                 await _context.SaveChangesAsync();
                 TempData["Success"] = "Деньги успешно переведены";

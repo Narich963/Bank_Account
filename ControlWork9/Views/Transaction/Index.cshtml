@@ -1,0 +1,75 @@
+﻿@model List<ControlWork9.Models.Transaction>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <form asp-action="Index" method="get">
+                <th>
+                    <label for="from">Дата от</label>
+                    <input class="form-control" name="from" type="datetime-local"/>
+                </th>
+                <th>
+                    <label for="to">Дата до</label>
+                    <input class="form-control" name="to" type="datetime-local" />
+                </th>
+                <th>
+                    <button class="btn btn-primary">Фильтровать</button>
+                </th>
+            </form>
+        </tr>
+    </thead>
+    <thead>
+        <tr>
+            <th>
+                От кого
+            </th>
+            <th>
+                К кому
+            </th>
+            <th>
+                Время транзакции
+            </th>
+            <th>
+                Сумма
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @if (item.UserFrom != null)
+                {    
+                    @item.UserFrom.UserName
+                }
+                else
+                {
+                    <p>Анонимное пополнение</p>      
+                }
+            </td>
+            <td>
+                @item.UserTo.UserName
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Created)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sum)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ControlWork9.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20240622064701_AddedTransactions")]
+    [Migration("20240622084200_AddedTransactions")]
     partial class AddedTransactions
     {
         /// <inheritdoc />
@@ -36,21 +36,20 @@ namespace ControlWork9.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("FromId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("Sum")
                         .HasColumnType("integer");
 
-                    b.Property<int>("ToId")
+                    b.Property<int?>("UserFromId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserToId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserFromId");
+
+                    b.HasIndex("UserToId");
 
                     b.ToTable("Transactions");
                 });
@@ -262,9 +261,20 @@ namespace ControlWork9.Migrations
 
             modelBuilder.Entity("ControlWork9.Models.Transaction", b =>
                 {
-                    b.HasOne("ControlWork9.Models.User", null)
-                        .WithMany("Transactions")
-                        .HasForeignKey("UserId");
+                    b.HasOne("ControlWork9.Models.User", "UserFrom")
+                        .WithMany("SendTransactions")
+                        .HasForeignKey("UserFromId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("ControlWork9.Models.User", "UserTo")
+                        .WithMany("ReceivedTransactions")
+                        .HasForeignKey("UserToId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("UserFrom");
+
+                    b.Navigation("UserTo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -320,7 +330,9 @@ namespace ControlWork9.Migrations
 
             modelBuilder.Entity("ControlWork9.Models.User", b =>
                 {
-                    b.Navigation("Transactions");
+                    b.Navigation("ReceivedTransactions");
+
+                    b.Navigation("SendTransactions");
                 });
 #pragma warning restore 612, 618
         }
