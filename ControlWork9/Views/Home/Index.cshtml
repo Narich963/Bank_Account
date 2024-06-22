@@ -2,19 +2,54 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <form asp-action="AddToBalance" method="post">
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["Success"]
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["Error"]
+    </div>
+}
+
+<h2>Пополнение счета</h2>
+<div class="text-center mb-5">
+    <form asp-action="AddToBalance" method="post" class="col-6 border border-1">
         <div class="validation" asp-validation-summary="ModelOnly"></div>
-        <div class="mb-3 col-4">
+        <div class="mb-3 ms-3 me-3 mt-3">
             <label for="exampleInputEmail1" class="form-label">Уникальный номер пользователя</label>
             <input name="uniqueNumber" type="number" class="form-control" id="exampleInputEmail1">
         </div>
-        <div class="mb-3 col-4">
+        <div class="mb-3 ms-3 me-3">
             <label for="exampleInputEmail1" class="form-label">Сумма пополнения</label>
             <input name="sum" type="number" class="form-control" id="exampleInputEmail1">
         </div>
-        <div class="mb-3 col-4">
+        <div class="mb-3 ms-3 me-3">
             <button type="submit" class="btn btn-primary">Пополнить</button>
         </div>
     </form>
 </div>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <h2>Перевод по счету</h2>
+    <div class="text-center mb-5">
+        <form asp-action="Transfer" method="post" class="col-6 border border-1">
+            <div class="validation" asp-validation-summary="ModelOnly"></div>
+            <div class="mb-3 ms-3 me-3 mt-3">
+                <label for="exampleInputEmail1" class="form-label">Уникальный номер пользователя</label>
+                <input name="uniqueNumber" type="number" class="form-control" id="exampleInputEmail1">
+            </div>
+            <div class="mb-3 ms-3 me-3">
+                <label for="exampleInputEmail1" class="form-label">Сумма перевода</label>
+                <input name="sum" type="number" class="form-control" id="exampleInputEmail1">
+            </div>
+            <div class="mb-3 ms-3 me-3">
+                <button type="submit" class="btn btn-primary">Перевести деньги</button>
+            </div>
+        </form>
+    </div>
+}
